@@ -3,19 +3,16 @@ pipeline {
         options {
                 buildDiscarder(logRotator(numToKeepStr: '2', artifactNumToKeepStr: '1'))
         }
-
         stages {
                 stage('Unit Tests') {
                         agent {
                                 label 'apache'
                         }
-
                         steps {
                                 sh 'ant -f test.xml -v'
                                 junit 'reports/result.xml'
                         }
                 }
-
                 stage('build') {
                         agent {
                                 label 'apache'
@@ -23,11 +20,11 @@ pipeline {
                         steps {
                                 sh 'ant -f build.xml -v'
                         }
-			post {
-					success {
-							archiveArtifacts artifacts: 'dist/*.jar', fingerprint: true
-					}
-			}
+                        post {
+                                        success {
+                                                        archiveArtifacts artifacts: 'dist/*.jar', fingerprint: true
+                                        }
+                        }
                 }
                 stage('deploy') {
                         agent {
@@ -46,7 +43,15 @@ pipeline {
                                 sh "java -jar rectangle_${env.BUILD_NUMBER}.jar 3 4"
                         }
                 }
+				
+				stage("Test on Debian") {
+					agent {
+						docker 'openjdk:8u121-jre'
+					}
+					steps {
+						sh "wget http://192.168.5.147/rectangles/all/rectangle_${env.BUILD_NUMBER}.jar"
+						sh "java -jar rectangle_${env.BUILD_NUMBER}.jar 3 4"
+					}
+				}
         }
-
 }
-
