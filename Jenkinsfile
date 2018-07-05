@@ -1,5 +1,5 @@
 pipeline {
-        agent none
+        agent apache
         options {
                 buildDiscarder(logRotator(numToKeepStr: '2', artifactNumToKeepStr: '1'))
         }
@@ -44,9 +44,6 @@ pipeline {
 
         post {
                 always {
-                        agent {
-				label 'apache'
-			}
 			archiveArtifacts artifacts: 'dist/*.jar', fingerprint: true
                 }
         }
