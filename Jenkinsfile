@@ -3,7 +3,6 @@ pipeline {
 	stages {
 		stage('build') {
 			steps {
-				withEnv(["MAJOR_VERSION=1"])
 				sh 'ant -f build.xml -v'
 			}
 		}
