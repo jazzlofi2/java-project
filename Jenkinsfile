@@ -43,8 +43,11 @@ pipeline {
         }
 
         post {
+		agent {
+			label 'apache'
+		}
                 always {
-                        archiveArtifacts artifacts: 'dist/rectangle_${env.BUILD_NUMBER}.jar', fingerprint: true
+                        archiveArtifacts artifacts: 'dist/*.jar', fingerprint: true
                 }
         }
 }
