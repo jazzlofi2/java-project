@@ -8,7 +8,7 @@ pipeline {
 		stage('Unit Tests') {
 			steps {
 				sh 'ant if text.xml -v'
-				junit 'reports/result.xml
+				junit 'reports/result.xml'
 			}
 		}
 
